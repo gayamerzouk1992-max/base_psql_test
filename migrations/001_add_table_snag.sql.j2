@@ -1,0 +1,12 @@
+BEGIN;
+
+SET LOCAL search_path TO {{ schema_snag }}, public;
+
+CREATE TABLE IF NOT EXISTS snag_cross (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name TEXT,
+  snag_date TIMESTAMPTZ NOT NULL DEFAULT now(),
+  is_fixed BOOLEAN
+);
+
+COMMIT;
