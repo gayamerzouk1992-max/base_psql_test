@@ -1,0 +1,24 @@
+---
+- name: apply migration PostgreSQL
+  hosts: localhost
+  gather_facts: no
+  vars:
+    db_name: ops_test
+    db_user: "{{ lookup('env','DB_USER') }}"
+    db_password: "{{ lookup('env','DB_PASSWORD') }}"
+    migrations_path: "../migrations"
+
+  tasks:
+    - name: check if db exists
+      community.postgresql.postgresql_db:
+        name: "{{ db_name }}"
+        state: present
+        login_user: "{{ db_user }}"
+        login_password: "{{ db_password }}"
+
+    - name: execute sql file
+      community.postgresql.postgresql_query:
+        db: "{{ db_name }}"
+        login_user: "{{ db_user }}"
+        login_password: "{{ db_password }}"
+        path: "{{ migrations_path }}/001_fichier.sql"
